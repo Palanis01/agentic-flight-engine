@@ -65,4 +65,3 @@ jobs:
         with:
           app-name: 'flight-engine-backend'
           slot-name: 'Production'
-dir
