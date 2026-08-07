@@ -1,4 +1,4 @@
-﻿name: Build and deploy Python app to Azure Web App - flight-engine-backend
+name: Build and deploy Python app to Azure Web App - flight-engine-backend
 
 on:
   push:
