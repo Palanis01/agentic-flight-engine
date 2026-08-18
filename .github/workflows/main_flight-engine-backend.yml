@@ -52,12 +52,12 @@ jobs:
         with:
           name: python-app
 
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_87C5FCE2808A42C0B5C03C0D656AF221 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_349F9B11A73744FDA0672AF7649DC34C }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_4BA257A188E2459C8EC2CACFDBBD3D70 }}
+     - name: Deploy to Azure WebApp
+       uses: azure/webapps-deploy@v2
+       with:
+         app-name: flight-engine-backend
+         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+         package: .
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
