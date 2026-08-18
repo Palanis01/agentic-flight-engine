@@ -1,65 +1,32 @@
-name: Build and deploy Python app to Azure Web App - flight-engine-backend
+name: Deploy Flight Engine Backend
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
 
     steps:
-      - name: Use Node.js 24
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Python version
-        uses: actions/setup-python@v5
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          python-version: "3.11"
+          node-version: '18'
 
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r backend/requirements.txt
+        run: npm install
 
-      - name: Upload artifact for deployment jobs
-        uses: actions/upload-artifact@v4
+      - name: Build project
+        run: npm run build
+
+      - name: Deploy to Azure WebApp
+        uses: azure/webapps-deploy@v2
         with:
-          name: python-app
-          path: |
-            .
-            !antenv/
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    permissions:
-      id-token: write
-      contents: read
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: python-app
-
-     - name: Deploy to Azure WebApp
-       uses: azure/webapps-deploy@v2
-       with:
-         app-name: flight-engine-backend
-         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-         package: .
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: "flight-engine-backend"
-          slot-name: "Production"
+          app-name: flight-engine-backend
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: .
