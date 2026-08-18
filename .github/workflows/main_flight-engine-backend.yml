@@ -8,27 +8,19 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
+      - name: Create deployment package (ZIP)
+        run: |
+          cd backend
+          zip -r ../backend.zip .
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build project
-        run: npm run build
-
-      - name: Deploy to Azure WebApp
+      - name: Deploy to Azure WebApp (FastAPI)
         uses: azure/webapps-deploy@v2
         with:
           app-name: flight-engine-backend
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: .
+          package: backend.zip
