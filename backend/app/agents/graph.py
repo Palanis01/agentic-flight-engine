@@ -146,7 +146,7 @@ async def recommendation_node(state: FlightAgentState) -> FlightAgentState:
         rec["best_itinerary"] = ranked[best_idx] if ranked else {}
     except Exception:
         rec = {"rationale": response.content, "best_itinerary": ranked[0] if ranked else {}}
-    return {**state, "recommendation": rec}
+    return {**state, "flight_recommendation": rec}
 
 
 # ---------------------------------------------------------------------------
