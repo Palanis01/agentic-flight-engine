@@ -189,14 +189,14 @@ def build_flight_graph() -> StateGraph:
     graph.add_node("intent_parser", intent_parser_node)
     graph.add_node("flight_search", flight_search_node)
     graph.add_node("price_compare", price_compare_node)
-    graph.add_node("recommendation", recommendation_node)
+    graph.add_node("recommendation_step", recommendation_node)
     graph.add_node("respond", respond_node)
 
     graph.set_entry_point("intent_parser")
     graph.add_edge("intent_parser", "flight_search")
     graph.add_conditional_edges("flight_search", route_after_search)
-    graph.add_edge("price_compare", "recommendation")
-    graph.add_edge("recommendation", "respond")
+    graph.add_edge("price_compare", "recommendation_step")
+    graph.add_edge("recommendation_step", "respond")
     graph.add_edge("respond", END)
 
     return graph.compile()
