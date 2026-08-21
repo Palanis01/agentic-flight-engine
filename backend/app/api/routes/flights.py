@@ -56,7 +56,7 @@ async def search_flights(
     request: FlightSearchRequest,
     background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
-  # _token: dict = Depends(verify_token),
+    _token: dict = Depends(verify_token),
 ):
     """
     Kick off an agentic flight search. Returns a run_id for SSE streaming.
